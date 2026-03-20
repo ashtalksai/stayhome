@@ -1,46 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Instrument+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700;800&family=Instrument+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   /* Backgrounds */
-  --background: #FAF8F4;
+  --background: #FAF8F5;
   --surface: #FFFFFF;
-  --surface-alt: #E8EDE4;
-  --surface-hover: #F0F4EE;
+  --surface-alt: #F0EDE8;
+  --surface-hover: #EBE8E3;
   --surface-muted: #F5F3EF;
   --border: #D4CFCA;
   --border-light: #EAE7E2;
 
   /* Text */
-  --text-primary: #1A2E1A;
-  --text-secondary: #3D5140;
-  --text-muted: #6B7F6D;
-  --text-inverse: #FAF8F4;
+  --text-primary: #2C2824;
+  --text-secondary: #4A433D;
+  --text-muted: #7A706A;
+  --text-inverse: #FAF8F5;
 
-  /* Accent (terracotta) */
-  --accent: #C4622D;
-  --accent-hover: #A94F23;
-  --accent-light: #F5E8E0;
-  --accent-foreground: #FAF8F4;
+  /* Accent (sage green) */
+  --accent: #7BAB8B;
+  --accent-hover: #629878;
+  --accent-light: #EBF3EE;
+  --accent-foreground: #FFFFFF;
 
   /* Status colors */
-  --success: #6B8F71;
-  --success-bg: #EDF4EE;
-  --warning: #C4892D;
+  --success: #7BAB8B;
+  --success-bg: #EBF3EE;
+  --warning: #D4921E;
   --warning-bg: #FDF3E3;
-  --destructive: #B84444;
+  --destructive: #C0453A;
   --destructive-bg: #FDEAEA;
 
   /* Risk scale */
-  --risk-low: #6B8F71;
-  --risk-medium: #C4892D;
-  --risk-high: #C4622D;
-  --risk-critical: #B84444;
+  --risk-low: #7BAB8B;
+  --risk-medium: #D4921E;
+  --risk-high: #C0453A;
+  --risk-critical: #9B2F27;
 
   /* Typography */
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Instrument Sans", -apple-system, sans-serif;
   --font-mono: "DM Mono", "Courier New", monospace;
 
@@ -63,7 +63,7 @@
   --shadow-card-hover: 0 4px 12px rgba(26, 46, 26, 0.10), 0 16px 40px rgba(26, 46, 26, 0.12);
   --shadow-dropdown: 0 8px 24px rgba(26, 46, 26, 0.12);
   --shadow-modal: 0 24px 80px rgba(26, 46, 26, 0.18);
-  --shadow-button: 0 2px 8px rgba(196, 98, 45, 0.30);
+  --shadow-button: 0 2px 8px rgba(123, 171, 139, 0.35);
 
   /* shadcn compatibility */
   --foreground: var(--text-primary);

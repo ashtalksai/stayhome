@@ -4,12 +4,24 @@ import Link from "next/link"
 import { ArrowLeft, Download, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ScoreRing } from "@/components/dashboard/score-ring"
+import { auth } from "@/lib/auth"
+import { prisma } from "@/lib/db"
+import { redirect } from "next/navigation"
 
-// Demo data for preview
+const severityConfig: Record<string, { label: string; border: string; bg: string; text: string }> = {
+  critical: { label: "Critical", border: "border-[var(--risk-critical)]", bg: "bg-[var(--destructive-bg)]", text: "text-[var(--risk-critical)]" },
+  high: { label: "High", border: "border-[var(--risk-high)]", bg: "bg-[var(--destructive-bg)]", text: "text-[var(--risk-high)]" },
+  medium: { label: "Medium", border: "border-[var(--risk-medium)]", bg: "bg-[var(--warning-bg)]", text: "text-[var(--risk-medium)]" },
+  low: { label: "Low", border: "border-[var(--risk-low)]", bg: "bg-[var(--success-bg)]", text: "text-[var(--risk-low)]" },
+}
+
 const demoReport = {
+  id: "demo",
   propertyName: "Mom's House",
   address: "123 Oak Street, Portland, OR",
   safetyScore: 67,
+  status: "COMPLETED",
+  createdAt: new Date(),
   report: {
     summary: "Several important safety improvements needed. Prioritize high-risk items first.",
     riskItems: [
@@ -23,22 +35,54 @@ const demoReport = {
   },
 }
 
-const severityConfig: Record<string, { label: string; border: string; bg: string; text: string }> = {
-  critical: { label: "Critical", border: "border-[var(--risk-critical)]", bg: "bg-[var(--destructive-bg)]", text: "text-[var(--risk-critical)]" },
-  high: { label: "High", border: "border-[var(--risk-high)]", bg: "bg-[var(--destructive-bg)]", text: "text-[var(--risk-high)]" },
-  medium: { label: "Medium", border: "border-[var(--risk-medium)]", bg: "bg-[var(--warning-bg)]", text: "text-[var(--risk-medium)]" },
-  low: { label: "Low", border: "border-[var(--risk-low)]", bg: "bg-[var(--success-bg)]", text: "text-[var(--risk-low)]" },
+interface RiskItem {
+  room: string
+  risk: string
+  severity: string
+  fix: string
+  cost: string
 }
 
-export default function AuditResultPage({ params }: { params: { id: string } }) {
-  const { id } = params
-  // In production, fetch from DB. Show demo for non-DB IDs.
-  const report = demoReport
-  const score = report.safetyScore
+interface ReportData {
+  summary: string
+  riskItems: RiskItem[]
+}
 
-  const criticalItems = report.report.riskItems.filter((r) => r.severity === "critical" || r.severity === "high")
-  const mediumItems = report.report.riskItems.filter((r) => r.severity === "medium")
-  const lowItems = report.report.riskItems.filter((r) => r.severity === "low")
+export default async function AuditResultPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+
+  let auditData: typeof demoReport = demoReport
+
+  if (id !== "demo") {
+    const session = await auth()
+    if (!session?.user?.id) {
+      redirect("/login")
+    }
+
+    const audit = await prisma.audit.findFirst({
+      where: { id, userId: session.user.id },
+    }).catch(() => null)
+
+    if (audit) {
+      auditData = {
+        id: audit.id,
+        propertyName: audit.propertyName,
+        address: audit.address || "",
+        safetyScore: audit.safetyScore || 0,
+        status: audit.status,
+        createdAt: audit.createdAt,
+        report: (audit.report as unknown as ReportData) || demoReport.report,
+      }
+    }
+  }
+
+  const report = auditData
+  const score = report.safetyScore
+  const riskItems: RiskItem[] = (report.report as ReportData)?.riskItems || []
+
+  const criticalItems = riskItems.filter((r) => r.severity === "critical" || r.severity === "high")
+  const mediumItems = riskItems.filter((r) => r.severity === "medium")
+  const lowItems = riskItems.filter((r) => r.severity === "low")
 
   return (
     <>
@@ -53,16 +97,36 @@ export default function AuditResultPage({ params }: { params: { id: string } }) 
             </Link>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-2">Safety Report</p>
+                <p className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-2">
+                  Safety Report · {report.createdAt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                </p>
                 <h1 className="font-display font-bold text-4xl text-[var(--text-primary)] mb-2">
                   {report.propertyName}
                 </h1>
-                <p className="text-[var(--text-muted)] text-sm mb-4">{report.address}</p>
-                <p className="text-[var(--text-secondary)] leading-relaxed">{report.report.summary}</p>
+                {report.address && (
+                  <p className="text-[var(--text-muted)] text-sm mb-4">{report.address}</p>
+                )}
+                <p className="text-[var(--text-secondary)] leading-relaxed">
+                  {(report.report as ReportData)?.summary}
+                </p>
               </div>
               <div className="flex flex-col items-center gap-4">
                 <ScoreRing score={score} size={160} />
                 <p className="text-sm text-[var(--text-muted)] text-center">Your home&apos;s safety score</p>
+                <div className="flex gap-6 text-center">
+                  <div>
+                    <p className="font-mono font-bold text-lg text-[var(--risk-high)]">{criticalItems.length}</p>
+                    <p className="text-xs text-[var(--text-muted)]">High Priority</p>
+                  </div>
+                  <div>
+                    <p className="font-mono font-bold text-lg text-[var(--risk-medium)]">{mediumItems.length}</p>
+                    <p className="text-xs text-[var(--text-muted)]">Medium Priority</p>
+                  </div>
+                  <div>
+                    <p className="font-mono font-bold text-lg text-[var(--risk-low)]">{lowItems.length}</p>
+                    <p className="text-xs text-[var(--text-muted)]">Low Priority</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -72,11 +136,13 @@ export default function AuditResultPage({ params }: { params: { id: string } }) 
         <div className="max-w-4xl mx-auto px-6 py-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="font-display font-semibold text-2xl text-[var(--text-primary)]">
-              Risk Findings ({report.report.riskItems.length} items)
+              Risk Findings ({riskItems.length} items)
             </h2>
-            <Button variant="outline" className="rounded-full border-[var(--border)] text-[var(--text-secondary)] gap-2">
-              <Download className="w-4 h-4" />
-              Download PDF
+            <Button asChild variant="outline" className="rounded-full border-[var(--border)] text-[var(--text-secondary)] gap-2">
+              <Link href={`/audit/${id}/report`}>
+                <Download className="w-4 h-4" />
+                PDF View
+              </Link>
             </Button>
           </div>
 
@@ -90,7 +156,7 @@ export default function AuditResultPage({ params }: { params: { id: string } }) 
                 <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-[var(--text-muted)] mb-3">{title}</h3>
                 <div className="flex flex-col gap-3">
                   {items.map((item, i) => {
-                    const config = severityConfig[item.severity]
+                    const config = severityConfig[item.severity] || severityConfig.low
                     return (
                       <div
                         key={i}
@@ -122,7 +188,7 @@ export default function AuditResultPage({ params }: { params: { id: string } }) 
           )}
 
           {/* Contractor CTA */}
-          <div className="mt-12 bg-[var(--accent-light)] rounded-lg p-8 border border-[var(--accent)]/20 flex items-center justify-between gap-6">
+          <div className="mt-12 bg-[var(--accent-light)] rounded-lg p-8 border border-[var(--accent)]/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <h3 className="font-display font-semibold text-xl text-[var(--text-primary)] mb-2">
                 Ready to fix these issues?
