@@ -1,8 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 import { AlertTriangle, HelpCircle, UserX } from "lucide-react"
 
 const problems = [
@@ -30,15 +28,13 @@ const problems = [
 ]
 
 export function Problem() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.15, once: true })
-
   return (
     <section className="section-padding bg-[var(--background)]" id="problem">
-      <div className="max-w-[1200px] mx-auto px-6" ref={ref}>
+      <div className="max-w-[1200px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
@@ -55,7 +51,8 @@ export function Problem() {
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 24 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, delay: i * 0.12 }}
               className="bg-[var(--surface)] rounded-md p-6 shadow-card border border-[var(--border-light)] hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
             >

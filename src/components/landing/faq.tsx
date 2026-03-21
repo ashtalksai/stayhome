@@ -1,8 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 import {
   Accordion,
   AccordionContent,
@@ -38,15 +36,13 @@ const faqs = [
 ]
 
 export function FAQ() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.1, once: true })
-
   return (
     <section className="section-padding bg-[var(--surface-alt)]" id="faq">
-      <div className="max-w-[800px] mx-auto px-6" ref={ref}>
+      <div className="max-w-[800px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
@@ -57,7 +53,8 @@ export function FAQ() {
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <Accordion type="single" collapsible className="space-y-3">

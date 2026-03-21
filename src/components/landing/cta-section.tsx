@@ -1,22 +1,18 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 
 export function CTASection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.3, once: true })
-
   return (
-    <section className="section-padding bg-[var(--text-primary)]" ref={ref}>
+    <section className="section-padding bg-[var(--text-primary)]">
       <div className="max-w-[1200px] mx-auto px-6 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 1, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center gap-6"
         >

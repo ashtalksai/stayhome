@@ -1,8 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 import Image from "next/image"
 import { CheckCircle2 } from "lucide-react"
 
@@ -13,9 +11,6 @@ const benefits = [
 ]
 
 export function Solution() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.15, once: true })
-
   return (
     <section
       className="section-padding bg-[var(--surface-alt)] relative overflow-hidden"
@@ -29,12 +24,13 @@ export function Solution() {
           backgroundSize: "200px 200px",
         }}
       />
-      <div className="max-w-[1200px] mx-auto px-6 relative z-10" ref={ref}>
+      <div className="max-w-[1200px] mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Screenshot */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.6 }}
             className="relative"
           >
@@ -58,7 +54,8 @@ export function Solution() {
           {/* Text */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex flex-col gap-6"
           >

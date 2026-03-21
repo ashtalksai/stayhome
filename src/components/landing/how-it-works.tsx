@@ -1,8 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 
 const steps = [
   {
@@ -26,15 +24,13 @@ const steps = [
 ]
 
 export function HowItWorks() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.15, once: true })
-
   return (
     <section className="section-padding bg-[var(--background)]" id="how-it-works">
-      <div className="max-w-[1200px] mx-auto px-6" ref={ref}>
+      <div className="max-w-[1200px] mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 1, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
@@ -54,8 +50,9 @@ export function HowItWorks() {
             {steps.map((step, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 24 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                initial={{ opacity: 1, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.5, delay: i * 0.15 }}
                 className="flex flex-col items-center text-center gap-4"
               >

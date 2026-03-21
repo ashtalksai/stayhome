@@ -1,8 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 import { Star } from "lucide-react"
 
 const testimonials = [
@@ -27,15 +25,13 @@ const testimonials = [
 ]
 
 export function SocialProof() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.15, once: true })
-
   return (
     <section className="section-padding bg-[var(--surface-alt)]" id="testimonials">
-      <div className="max-w-[1200px] mx-auto px-6" ref={ref}>
+      <div className="max-w-[1200px] mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 1, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
@@ -60,8 +56,9 @@ export function SocialProof() {
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 24 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              initial={{ opacity: 1, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, delay: i * 0.12 }}
               className="bg-[var(--surface)] rounded-md p-6 shadow-card border border-[var(--border-light)]"
             >

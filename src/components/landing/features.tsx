@@ -1,21 +1,17 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 import Image from "next/image"
 import { DollarSign, CalendarCheck } from "lucide-react"
 
 export function Features() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.1, once: true })
-
   return (
     <section className="section-padding bg-[var(--background)]" id="features">
-      <div className="max-w-[1200px] mx-auto px-6" ref={ref}>
+      <div className="max-w-[1200px] mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 1, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
@@ -31,8 +27,9 @@ export function Features() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Large — room audit */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.05 }}
             className="lg:col-span-2 bg-[var(--surface-alt)] rounded-lg p-8 shadow-card border border-[var(--border-light)] hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
           >
@@ -58,8 +55,9 @@ export function Features() {
 
           {/* AI Risk Scoring */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="bg-[var(--text-primary)] rounded-lg p-8 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-4"
           >
@@ -95,8 +93,9 @@ export function Features() {
 
           {/* Contractor matching */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.15 }}
             className="bg-[var(--surface)] rounded-lg p-8 shadow-card border border-[var(--border-light)] hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
           >
@@ -118,8 +117,9 @@ export function Features() {
 
           {/* PDF Report */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-[var(--accent-light)] rounded-lg p-8 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
           >
@@ -141,8 +141,9 @@ export function Features() {
 
           {/* Cost estimates */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.25 }}
             className="bg-[var(--surface-muted)] rounded-lg p-8 shadow-card border border-[var(--border-light)] hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
           >
@@ -169,8 +170,9 @@ export function Features() {
 
           {/* 30-day follow-up */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="bg-[var(--success-bg)] rounded-lg p-8 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200"
           >

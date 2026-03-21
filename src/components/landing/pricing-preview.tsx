@@ -1,8 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
@@ -50,15 +48,13 @@ const plans = [
 ]
 
 export function PricingPreview() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { amount: 0.1, once: true })
-
   return (
     <section className="section-padding bg-[var(--background)]" id="pricing-preview">
-      <div className="max-w-[1200px] mx-auto px-6" ref={ref}>
+      <div className="max-w-[1200px] mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 1, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
@@ -74,8 +70,9 @@ export function PricingPreview() {
           {plans.map((plan, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 24 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              initial={{ opacity: 1, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className={`rounded-lg p-8 border-2 relative ${
                 plan.highlight
@@ -121,8 +118,9 @@ export function PricingPreview() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
+          initial={{ opacity: 1 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-center"
         >
