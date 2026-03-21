@@ -28,7 +28,7 @@ export function Solution() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Screenshot */}
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
+            initial={{ opacity: 1, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.6 }}
@@ -53,7 +53,7 @@ export function Solution() {
 
           {/* Text */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
+            initial={{ opacity: 1, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.6, delay: 0.15 }}
